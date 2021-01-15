@@ -8,362 +8,403 @@
 \newcommand\hwnumber{1}
 \newcommand\userID{Pedro R. F de Carvalho}
 
+\documentclass[tikz]{standalone}
+\usepackage{pgfgantt}
+%\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{tp1} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=orange!30]
+\tikzstyle{tp2y} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{tp2n} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=red!30]
+\tikzstyle{tp3} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
 \begin{document}
-\textbf{\Large Summary of the $C_v$ Criterion}
+\textbf{\Large Project: Spinodal and binodal lines for Lennard-Jones and Dignon potentials }
 
 \tableofcontents
 
 \section{The Quesiton}
-The construction of phase diagrams for protein systems is a posed problem. Nowadays, criteria are being proposed to shed light on this issue. 
-Our goal here is to construct a criterion that, in the NVT ensemble and through the scanning of several densities, allows us to demark a region of stability. 
-The temperature upper limit of such a region is the critical point of the system, where the "gas" and liquid phases are indistinguishable. 
-We propose to tackle this problem by measurements of the specific heat capacity ($C_{v}$). 
-This calculation will allow us to locate regions where $C_{v}<0$, violating the stability criterion and thus assigning the desired regions of instability.
+This projects main goal is to determine the binodal and spinodal lines in the ($\rho \times T$) phase space for systems composed by beads or chains, where those elements will interact through Lennard-Jones or Dignon potential. 
 
-    
-\section{The Spinodal Curve} \label{spinodal}
-The spinodal curve delimeters the region of instability of the system and is marked by the divergence or peaks of some response functions, inside the spinodal region the systems is governed by a global instability, this global instability gives rise to a phase separation known as "spinodal decomposition". In the spinodal decompostion the system will actively phase separate because miscibility is energetically more expensive than the heterogeneous state, this instability will result in negative values of some response functions of the system. %Based on this, we mark the limits of instability, i.e. the spinodal curve, as the region where $C_{v}<0$ which is separetaed by two divergences in $C_{v}$. The region between the spinodal and binodal curve is where the system lies at a metastable configuration and, thus, it is governed by nucleation and coacervation processes.
- \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/old/Screenshot_2020-10-02_14-44-33.png}
-        %\caption{}
-        \label{spinodalscheme}
-    \end{figure}
+\section{The Systems}
+The planned simulations are intendend to emulate the properties of proteic systems, where the protein representation is made in a coarse-graines approach. Here we consider each residue as a bead, those beads can be thethered by harmonic potential \ref{chains} or in a monomeric composition \ref{beads}. Non-chained beads can interact by a simple Lennard-Jones system \ref{LJ Potential}, or by a more realistic sequence-depent approach using the Dignon Potential\ref{DG Potential} where there will also be included electrical charges, and thus electrical potential, as well.
+\subsection{Lennard-Jones Potential}\label{LJ Potential}
+The Lennard-Jones potential is a canonical potential, defined by the following expression:
+\begin{equation}
+V(r) = 4 \epsilon \bigg[ \bigg(\frac{\sigma}{r}\bigg)^{12}  - \bigg(\frac{\sigma}{r}\bigg)^{6} \bigg]
+\end{equation}
 
-    
-\section{The simulation}\label{simulation}
+Where,
 
-The system to be simulated is composed of $N=2917$ particles that interact via the Lennard-Jones potential, with cutoff radius $r_c=6.8$, the particles are simulated in a cubic box with periodic boundary conditions. Each run is set for a fixed value $T$ of temperature and a density $\rho$, in pratical terms, each run is a point on the phase diagram $(\rho,T)$. We simulated this system for $\Delta t=1 000 000$ time steps. The simulations were carried out using LAMMPS software. Summarizing:
- \begin{itemize}
-                        \item&[Number of particles:] $N=2917$
-            \item&[Total time:] $\Delta t=1 000 000 $
-            \item&[Cutoff radius:] $r_c=6.8 $
-            \item&[Temperature:] $0.9\leq T \leq1.4$ , iterated in intervals $\Delta T=0.05$
-            \item&[Density:] $0.002\leq\rho\leq0.8$, iterated in intervals $\Delta\rho=0.002$
-        \end{itemize}
+\begin{itemize}
+\item $V =$ intermolecular potential.
+\item $\sigma =$ distance where V is 0.
+\item $r$ = distance between atoms, measured from one center to the other.
+\item $\epsilon$ = interaction strength.
+\end{itemize}
+In computational simulations, in order to save computational time, it is also necessary to define a \textit{cutoff radius} ($r_c$), for which $r\geq r_c \to V(r)=0$.
 
-    
-    \section{Time series of energy}\label{timeseries}
-    Here we will address the time series of the potential energy.
-    The following figures correspond to the plots of time series of energy, each figure encompasses one specific value $T$ of temperature, where the several lines represent different values of overall density $\rho$.
-    The green and blue lines are the densities that define the spinodal region, using our criterion which will be defined in section \ref{analysis}.
-       \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T0.9}.png}
-        \caption{Timeseries of the potential energy, Temperature 0.9}
-        \label{TS_T=0.9}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T0.95}.png}
-        \caption{Timeseries of the potential energy, Temperature 0.95}
-        \label{TS_T=0.95}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T1}.png}
-        \caption{Timeseries of the potential energy, Temperature 1}
-        \label{TS_T=1}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T1.05}.png}
-        \caption{Timeseries of the potential energy, Temperature 1.05}
-        \label{TS_T=1.05}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T1.1}.png}
-        \caption{Timeseries of the potential energy, Temperature 1.1}
-        \label{TS_T=1.1}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T1.15}.png}
-        \caption{Timeseries of the potential energy, Temperature 1.15}
-        \label{TS_T=1.15}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T1.2}.png}
-        \caption{Timeseries of the potential energy, Temperature 1.2}
-        \label{TS_T=1.2}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T1.25}.png}
-        \caption{Timeseries of the potential energy, Temperature 1.25}
-        \label{TS_T=1.25}
-    \end{figure}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T1.3}.png}
-        \caption{Timeseries of the potential energy, Temperature 1.3}
-        \label{TS_T=1.3}
-    \end{figure}
-    %\begin{figure}[H]
-    %    \centering
-    %   \includegraphics[height=.4\textheight]{images/PE/{PE_ts_T1.35}.png}
-    %    \caption{Timeseries of the potential energy, Temperature 1.35}
-    %    \label{TS_T=1.35}
-    %\end{figure}
-    Some things are worth mentioning here. There are some space between some of the time series (figures \ref{TS_T=0.95},\ref{TS_T=1.05},\ref{TS_T=1.1} and \ref{TS_T=1.15}), those spaces are due to some lack of data, there is no discontinuity happening here. Although there are regions where the distances between consecutive lines are more sparse, in those specific regions, this occurs due to the increase of fluctuation when the system approaches the instability region. Another issue is, when working with lower values of temperature longer simulations will be needed, further study is required to go through such areas.
-    
-    \section{Energy histograms}\label{Hists}
-    Here we will show the distribution of the components of the energy of the systems, marking the densities that, according to our criterion to be defined, define the spinodal curve. The histograms are normalized, which means that the area of all histogram is equal to 1, the histograms have 50 bins.
-    
-    Generally, the histograms of the kinetic energy will not be altered by the density, being only altered due to changes in temperature.
-        \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{KE_hist_T1.2}.png}
-        \caption{Histogram of the kinetic energy, Temperature 1.2}
-        \label{KE_Hist_T=1.2}
-    \end{figure}
 
-        \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/KEHISTS.png}
-        \caption{Histogram of the kinetic energy, Temperature 1.2}
-        \label{KE_Hists}
-    \end{figure}
-    
-    
-    As for the potential energy, we will obtain regions where the width of the distributions are noticeably improved inside the spinodal region (delimited by the blue and green histogram).
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T0.9}.png}
-        \caption{Histogram of the potential energy, Temperature 0.9}
-        \label{PE_Hist_T=0.9}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T0.95}.png}
-        \caption{Histogram of the potential energy, Temperature 0.95}
-        \label{PE_Hist_T=0.95}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T1}.png}
-        \caption{Histogram of the potential energy, Temperature 1}
-        \label{PE_Hist_T=1}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T1.05}.png}
-        \caption{Histogram of the potential energy, Temperature 1.05}
-        \label{PE_Hist_T=1.05}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T1.1}.png}
-        \caption{Histogram of the potential energy, Temperature 1.1}
-        \label{PE_Hist_T=1.1}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T1.15}.png}
-        \caption{Histogram of the potential energy, Temperature 1.15}
-        \label{PE_Hist_T=1.15}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T1.2}.png}
-        \caption{Histogram of the potential energy, Temperature 1.2}
-        \label{PE_Hist_T=1.2}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T1.25}.png}
-        \caption{Histogram of the potential energy, Temperature 1.25}
-        \label{PE_Hist_T=1.25}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T1.3}.png}
-        \caption{Histogram of the potential energy, Temperature 1.3}
-        \label{PE_Hist_T=1.3}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{PE_hist_T1.35}.png}
-        \caption{Histogram of the potential energy, Temperature 1.35}
-        \label{PE_Hist_T=1.35}
-    \end{figure}
-    
-\section{The analysis}\label{analysis}
-    Here we want to develop a criterion based on calculations of the specific heat ($C_v$) of the simulated system, to do so    we follow the Rapaport textbook (pg. 88). There it is proposed that, for MD, one should use only one of the two components of the energy, instead of using the total energy. From there the specific heat is given by:
-    
-   % First, we obtain $C_v$ from the fluctuation of the total energy of the system:
-   %  \begin{equation}
-   %     C_{v}=\frac{N_{m} \left<\delta E^{2}_{K}\right>}{T^2}
-   % \end{equation}
+Here the units will be given as function of the Lennard-Jones parameters:
+\begin{itemize}
+\item mass = $m$
+\item distance = $\sigma$, where $x* = \frac{x}{\sigma}$
+\item temperature = $T^* = \frac{T k_b}{\epsilon}$
+\item density = $\rho^* = \rho \sigma^3 $
+\end{itemize}
+   
+\subsection{Dignon Scheme}\label{DG scheme}
+The Dignon Potential uses a more realistic approach, in his model they apply a sequence-dependent coarse-grain method, where they consider each type of amnioacid as having distinct mass, size, electrical charge and hydrophobic parameter.
+\subsubsection{Electrostatic Interaction}\label{electric}
+The electrostatic interaction is defined by a Coulombic interaction potential:
 
-    \begin{equation}\label{cv_calc}
-        C_{v}=\frac{3}{2}\left(1-\frac{2 N_{m} \left<\delta E^{2}_{K}\right>}{3 T^ 2}\right)^{-1}
-    \end{equation}
-   Where $E_K$ can be the potential or the kinetic energy and $\left<\delta E^{2}_{K}\right>$ is the variance of such energy component.
-    As we have seen in the previous section, and knowing that the variance is related to the widht of the distribution, the kinetic energy component seems insinsitive to the density changes and therefore we argue that the important component of the energy is the potential energy. 
-   The potential energy encapsulates the dynamics of the interactions of the system, while the kinetic energy is related with the temperature of the system. For this reason, we will consider and use the potential energy in our calculations.       
-       Still, we anticipate that the results for the kinetic energy were unsatisfactory and will not be discussed here.
-    
-\section{Cv from potential energy}
- Now, we are in a position to show exactly how the spinodal points were obtained. To do so, we show the curves of $C_{v}(\rho)$, and, we can observe that the region where $C_{v}<0$ defines the spinodal region, this due to the instability ($\frac{d^{2}E}{dx^2}<0$) of the spinodal region.
- 
- As mentioned before, here, we calculated the $C_v$ from \ref{cv_calc}.
-    
-%    \begin{equation}
-%        C_{v}=\frac{3}{2}\left(1-\frac{2 N_{m} \left<\delta E^{2}_{K}\right>}{3 T^ 2}\right)^{-1}
-%    \end{equation}
-    
-    
- \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T0.9}.png}
-        \caption{$C_v(\rho)$, Temperature 0.9}
-        \label{CV_PE_T=0.9}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T0.95}.png}
-        \caption{$C_v(\rho)$, Temperature 0.95}
-        \label{CV_PE_Hist_T=0.95}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T1}.png}
-        \caption{$C_v(\rho)$, Temperature 1}
-        \label{CV_PE_Hist_T=1}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T1.05}.png}
-        \caption{$C_v(\rho)$, Temperature 1.05}
-        \label{CV_PE_Hist_T=1.05}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T1.1}.png}
-        \caption{$C_v(\rho)$, Temperature 1.1}
-        \label{CV_PE_Hist_T=1.1}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T1.15}.png}
-        \caption{$C_v(\rho)$, Temperature 1.15}
-        \label{CV_PE_Hist_T=1.15}
-    \end{figure}
-    
-        
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T1.2}.png}
-        \caption{$C_v(\rho)$, Temperature 1.2}
-        \label{CV_PE_Hist_T=1.2}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T1.25}.png}
-        \caption{$C_v(\rho)$, Temperature 1.25}
-        \label{CV_PE_Hist_T=1.25}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T1.3}.png}
-        \caption{$C_v(\rho)$, Temperature 1.3}
-        \label{CV_PE_Hist_T=1.3}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_PE_T1.35}.png}
-        \caption{$C_v(\rho)$, Temperature 1.35}
-        \label{CV_PE_Hist_T=1.35}
-    \end{figure}
-    
-    As mentioned before, this regions of negative $C_{v}$ are indicators of the instability of the region. 
-    %We recall that $C_{v} \propto \left(\frac{\partial E_{K}}{\partial T}\right)_{V}$ 
-	Here we also plot the average potential energy as a function of density for several temperatures. It is possible to notice that some discotinuity appears in the unstable region. This is a consequence of the peaks of the histograms of potential energy from section \ref{Hists}.
-    
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PE_all.png}
-        \caption{Potential energy as a function of the overall density, for several values of temperature. Markers indicate the points of the spinodal curve of the system.}
-        \label{PE_all}
-    \end{figure}
-\newpage    
-\section{Phase Diagram}  
- Grouping all the data, we concatanate the divergence points of the $C_{v}\left(\rho \right)$, and with them we plot the spinodal curve based on the $C_{v}$ criterion. Toghether with this data we also plot the results of a very complete review work (https://doi.org/10.1021/acs.jcim.9b00620) about phase diagrams for a Lennard-Jones particles system.
- 
- \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/PD16.png}
-        \caption{Phase diagram of the Lennard-Jones particles systems. Besides the red dotted curve, the rest of the data was taken from the Lennard-Jones review work. The yellow stands for simulations using the Monte Carlos method, dark blue uses molecular dynamics using a cutoff radius bigger than 6, light blue stands for molecular dynamics with a cutoff radius lesser than 6, all the previously mentioned data is used to assess the binodal curve. The dark green is the data from molecular dynamics used to plot the spinodal curve. The red dotted line is the data from our simulations to generate the spinodal curve using the $C_{v}$ criteria.}
-        \label{PD}
-    \end{figure}
-    
-%    \textbf{Next Steps:} 
-%    \begin{itemize}
-%        \item To simulate Lennard-Jones chain system (Running), and check whether the chain length alters the phase diagram.
-        
-%        \item To simulate the FUSWT system, and compare the spinodal curve obtained with the phase diagram of the Dignon paper.
-%    \end{itemize}
+\begin{equation}
+E_{ij}\left(r\right) = \frac{q_i q_j}{4\pi D r}\exp(-r/\kappa)
+\end{equation}
+
+Where:
+\begin{itemize}
+\item $q_i$ = charge of the ith-aminoacid 
+\item $D$ = 80 , Dielectric constant
+\item $\kappa$ = 1 nm, Debye screening length
+\end{itemize}
+\subsubsection{Interaction Potential}\label{dg potential}
+Another way the beads interact with themselves is by interaction potential, in this model, this is made by the \textbf{Hidrophobicity scale model}, given by
+\begin{equation}
+\Phi(r) = 
+     \begin{cases}
+       &\Phi_{LJ}+(1-\lambda)\epsilon   ,   \text{    if }r\leq 2^{1/6}\sigma}\\
+       &\lambda\Phi_{LJ} ,    \text{otherwise}\\
+     \end{cases}
+\end{equation}
+\subsubsection{Parameters Tables}
+As previously stated, the Dignon model carries a sequence dependent behavior, which means that for every different type of residues, different parameters are addressed, those sequence-dependent parameters are: mass,$q$,$\lambda$ and $\sigma$ and are given in the following table:
+\begin{figure}[!htbp]
+\includegraphics[scale=0.7]{images/dgtable.png} 
+\caption{Dignon Parameters Table.}
+\end{figure}
+
+\subsection{Beads}\label{beads}
+Here, everytime we refer to a \textit{bead system}, we are talking about monomeric systems, composed of single beads, interacting using the \textit{Dignon Scheme}\ref{DG scheme} or the \textit{LJ pontential}\ref{LJ Potential}.
+\subsection{Chains}\label{chains}
+For chained systems,we use the harmonic potential, which in LAMMPS is written as:
+
+\begin{equation}
+E=K(r-r_0)^2
+\end{equation}
+
+ where:
+
+\begin{itemize}
+\item $K$: spring constant
+\item $r_0$: relaxed position
+\end{itemize}
+
+\textbf{LJ system:}
+
+\begin{itemize}
+\item $K=37,500 \epsilon/\sigma^2$
+\item $r_0=\sigma$
+\end{itemize}
+
+Here we will follow the reference [REF Silmore 2016]. 
+
+\textbf{Dignon system:}
+
+\begin{itemize}
+\item $K=10 kJ/\angstrom^2$
+\item $r_0=3.8 \angstrom$
+\end{itemize}
+
+Here we will follow the reference [REF Dignon Seq-dependent]. 
+
+\section{The Binodal}\label{binodal}
+The binodal line is also known as the \textit{coexistence curve}, and indicate the limits of metastability of the system, and it is given by the condition:
+\begin{equation}\label{binodalcondition}
+\mu_{1}\left(\rho,T\right)=\mu_{2}\left(\rho,T\right)
+\end{equation}
+inside the metastability region the system is driven through a slow process of aggregation, called nucleation, where the system phase separate in regions of densities $\rho_1$ and $\rho_2$ in order to obey the eq.\ref{binodalcondition}. It is important to stress the fact that, this phenomenom happens in a different timescale than the stabilization of a homogeneous system.
+\subsection{The Slab Method}\label{slab method}
+The slab method proposes a way to speed-up the phase separation process, allowing the sytem to reach the coexistence densities faster.
+This method consist of starting with a large box, compressing it to a dense system and a expansion of the box in a single direction, creating a favourable condition for a phase separated configuration. Summarizing, they leave a dense cluster on a slab with overall density inside the metastable region, the cluster will dissolve until it reaches the coexistence densities, given by the densities inside and outside the cluster.
+\begin{figure}[!htbp]
+\includegraphics[height=\textwidth, angle =90 ]{images/Screeshot_beads_slab.png} 
+\caption{Snapshot of a system of beads interacting via LJ-potential.}
+\end{figure}
+\begin{figure}[!htbp]
+\includegraphics[width=0.75\textwidth]{images/PD.png} 
+\caption{Coexistence curve obtained through slab method.}
+\end{figure}
+\section{The Spinodal}\label{spinodal}
+The spinodal curve delimeters the region of instability of the system and is marked by the divergence
+or peaks of some response functions, inside the spinodal region the systems is governed by a global
+instability, this global instability gives rise to a phase separation known as spinodal decomposition . In
+the spinodal decompostion the system will actively phase separate because miscibility is energetically
+more expensive than the heterogeneous state, this instability will result in negative values of some
+response functions of the system.
+
+
+\textbf{\textcolor{red}{Following two sections are blank, please refer to the Cv report.}}
+\subsection{The Specific Heat Criterion}\label{specific heat}
+\begin{figure}[!htbp]
+\includegraphics[width=0.75\textwidth]{images/PDTE2.png} 
+\caption{spinodal curve obtained through $C_v$ criterion.}
+\end{figure}
+\subsection{The Cluster Radius Criterion}\label{cluster radius}
+\section{Organogram}
+In this section we summaraize the systems to be simulated and the current availability of codes.
+
+Where:
+
+\begin{itemize}
+\item [\textbf{Random}:] Randomnly disrtibuted residues
+\item [\textbf{No q}:] Randomnly disrtibuted residues, excluding charged ones
+\item [\textbf{Single}:] One type of residue only
+\end{itemize}
+
+It is important to stress that each of thoses boxes represent one type of simulation, which would need to be simulated for different values of temperature for the \textit{slab} method, and for different values of density and temperature for the \textit{Box} simulations.
+
+\newline
+
+\begin{tikzpicture}[node distance=3cm]
+
+%Boxes
+\node (beads) [tp1] {Beads};
+%LJ
+\node (LJ) [tp1, right of=beads,yshift=1.5cm, xshift=1.0cm] {LJ};
+\node (LJbox) [tp2y, right of=LJ, xshift=1.0cm, yshift=1.0cm] {Box};
+\node (LJslab) [tp2y, below of=LJbox, yshift=1.0cm] {Slab};
+%subtitles
+\node (label1) [tp1, below of=beads,yshift=-3cm] {subject};
+\node (label2) [tp3, below of=label1,yshift=1.5cm] {subsubject};
+\node (label3) [tp2y, below of=label2,yshift=1.5cm] {written};
+\node (label4) [tp2n, below of=label3,yshift=1.5cm] {not written};
+%Dignon
+\node (DG) [tp1, below of=LJ, yshift=-1.5cm] {Dignon};
+%Random
+\node (DGr) [tp3, right of=DG, xshift=0.5cm] {Random (DGR)};
+\node (DGrbox) [tp2n, right of=DGr, xshift=1.0cm, yshift=0.5cm] {Box};
+\node (DGrslab) [tp2n, below of=DGrbox, yshift=1.8cm] {Slab};
+%No q
+\node (DGnq) [tp3, below of=DGr, yshift=0.5cm] {No q (DGq)};
+\node (DGnqbox) [tp2n, right of=DGnq, xshift=1.0cm, yshift=0.5cm] {Box};
+\node (DGnqslab) [tp2n, below of=DGnqbox, yshift=1.8cm] {Slab};
+%Single
+\node (DGs) [tp3, below of=DGnq, yshift=0.5cm] {Single (DGS)};
+\node (DGsbox) [tp2y, right of=DGs, xshift=1.0cm, yshift=0.5cm] {Box};
+\node (DGsslab) [tp2y, below of=DGsbox, yshift=1.8cm] {Slab};
+
+%arrows
+\draw [arrow] (beads) -- (LJ);
+\draw [arrow] (beads) -- (DG);
+\draw [arrow] (LJ) -- (LJbox);
+\draw [arrow] (LJ) -- (LJslab);
+\draw [arrow] (DG) -- (DGr);
+\draw [arrow] (DG) -- (DGnq);
+\draw [arrow] (DG) -- (DGs);
+\draw [arrow] (DGr) -- (DGrbox);
+\draw [arrow] (DGr) -- (DGrslab);
+\draw [arrow] (DGnq) -- (DGnqbox);
+\draw [arrow] (DGnq) -- (DGnqslab);
+\draw [arrow] (DGs) -- (DGsbox);
+\draw [arrow] (DGs) -- (DGsslab);
+
+
+\end{tikzpicture}
+
+\begin{tikzpicture}[node distance=3cm]
+
+%Boxes
+\node (beads) [tp1] {Chains};
+%LJ
+\node (LJ) [tp1, right of=beads,yshift=1cm, xshift=1.0cm] {LJ};
+\node (LJbox) [tp2y, right of=LJ, xshift=1.0cm, yshift=1.0cm] {Box};
+\node (LJslab) [tp2n, below of=LJbox, yshift=1.0cm] {Slab};
+%Dignon
+\node (DG) [tp1, below of=LJ, yshift=-1cm] {Dignon};
+%Random
+\node (DGr) [tp3, right of=DG, xshift=0.5cm] {Random (DGR)};
+\node (DGrbox) [tp2n, right of=DGr, xshift=1.0cm, yshift=0.5cm] {Box};
+\node (DGrslab) [tp2n, below of=DGrbox, yshift=1.8cm] {Slab};
+%No q
+\node (DGnq) [tp3, below of=DGr, yshift=0.5cm] {No q (DGq)};
+\node (DGnqbox) [tp2n, right of=DGnq, xshift=1.0cm, yshift=0.5cm] {Box};
+\node (DGnqslab) [tp2n, below of=DGnqbox, yshift=1.8cm] {Slab};
+%Single
+\node (DGs) [tp3, below of=DGnq, yshift=0.5cm] {Single (DGS)};
+\node (DGsbox) [tp2n, right of=DGs, xshift=1.0cm, yshift=0.5cm] {Box};
+\node (DGsslab) [tp2n, below of=DGsbox, yshift=1.8cm] {Slab};
+%Protein
+\node (DGp) [tp3, below of=DGs, yshift=0.5cm] {Protein (DGP)};
+\node (DGpbox) [tp2y, right of=DGp, xshift=1.0cm, yshift=0.5cm] {Box};
+\node (DGpslab) [tp2y, below of=DGpbox, yshift=1.8cm] {Slab};
+
+%arrows
+\draw [arrow] (beads) -- (LJ);
+\draw [arrow] (beads) -- (DG);
+\draw [arrow] (LJ) -- (LJbox);
+\draw [arrow] (LJ) -- (LJslab);
+\draw [arrow] (DG) -- (DGr);
+\draw [arrow] (DG) -- (DGnq);
+\draw [arrow] (DG) -- (DGs);
+\draw [arrow] (DG) -- (DGp);
+\draw [arrow] (DGr) -- (DGrbox);
+\draw [arrow] (DGr) -- (DGrslab);
+\draw [arrow] (DGnq) -- (DGnqbox);
+\draw [arrow] (DGnq) -- (DGnqslab);
+\draw [arrow] (DGs) -- (DGsbox);
+\draw [arrow] (DGs) -- (DGsslab);
+\draw [arrow] (DGp) -- (DGpbox);
+\draw [arrow] (DGp) -- (DGpslab);
+
+\end{tikzpicture}
+
 \newpage
 
-\section{Fus WT}
-Here we started to apply the $C_{v}$ criterion, it is important to stress that those are some preliminary results, and further simulations are necessary in order to draw the full picture.
-Below, we have simulated a system with $N=50$ proteins of FUS WT, using the dignon potential. According to Dignon (https://doi.org/10.1371/journal.pcbi.1005941), this system possess a critical temperature of $T_{c}=344 ^o K$
- \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/scheme_arr.png}
-        \caption{Fus WT system where $T_{c}=344 ^o K$. Left: Phase diagram, The red dotted curve was taken from the Dignon paper, the blue markers were obtained through computational simulations. Right upper: $C_{v}(\rho)$ for $T=360 ^o K$. Left upper: $C_{v}(\rho)$ for $T=340 ^o K$.}
-        \label{FUS}
-    \end{figure}
+\section{Jobs}
+\subsection{Beads}
+\subsubsection{LJ Box}
+\begin{itemize}
+\item	1 Temperature
+\item	50 densities
+\item	2916 beads
+\item	Total Wall Time: $20:35$
+\end{itemize}
+\subsubsection{LJ Slab}
+\begin{itemize}
+\item	1 Temperature
+\item	1 initial density
+\item	2916 beads
+\item	Total Wall Time: $8:10$
+\end{itemize}
 
-The region of such simulations display a snapshoot similar to the graphic representations of spinodal regions:
 
- \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/spinsfuswt.png}
-        \caption{Left: Snapshots of Fus WT systems, $T=340 ^o K$, from top to bottom: $\rho=17,32,63,124 \left(mg/mL\right)$. Right: expected profile of a system undergoing spinodal decomposition.}
-        \label{FUS}
-    \end{figure}
-\newpage
-\section{Lennard-Jones Chain}
-Another system to be studied is composed of chains of Lennard-Jones interacting particles, where the chains are tethered by harmonic bonds. Here we show the preliminary results of ongoing simulations.
 
- \begin{figure}[H]
-        \centering
-        \includegraphics[height=.4\textheight]{images/{Cv_T1}.png}
-        \caption{Preliminary $C_{v}(\rho)$ curve, for $T=1.1$}
-        \label{LJCHAIN}
-    \end{figure}    
+\section{Timeline of this project}\label{timeline}
 
-From this preliminary result, we conclude that the shown region, due to the $C_{v}$ sign, is unstable. So it is necessary more simulations to have a picture of a broader region.
-    
+
+
+%
+% A fairly complicated example from section 2.9 of the package
+% documentation. This reproduces an example from Wikipedia:
+% http://en.wikipedia.org/wiki/Gantt_chart
+%
+\title{Gantt Charts with the pgfgantt Package}
+\definecolor{barblue}{RGB}{153,204,254}
+\definecolor{groupblue}{RGB}{51,102,254}
+\definecolor{linkred}{RGB}{165,0,33}
+\renewcommand\sfdefault{phv}
+\renewcommand\mddefault{mc}
+\renewcommand\bfdefault{bc}
+%REF LINKS
+%\setganttlinklabel{s-s}{START-TO-START}
+%\setganttlinklabel{f-s}{FINISH-TO-START}
+%\setganttlinklabel{f-f}{FINISH-TO-FINISH}
+\sffamily
+\begin{ganttchart}[
+	x unit=0.8cm,
+    canvas/.append style={fill=none, draw=black!5, line width=.75pt},
+    hgrid style/.style={draw=black!5, line width=.75pt},
+    vgrid={*1{draw=black!5, line width=.75pt}},
+    today=1,
+    today rule/.style={
+      draw=black!64,
+      dash pattern=on 3.5pt off 4.5pt,
+      line width=1.5pt
+    },
+    today label font=\small\bfseries,
+    title/.style={draw=none, fill=none},
+    title label font=\bfseries\footnotesize,
+    title label node/.append style={below=7pt},
+    include title in canvas=false,
+    bar label font=\mdseries\small\color{black!70},
+    bar label node/.append style={left=2cm},
+    bar/.append style={draw=none, fill=red!63},
+    bar incomplete/.append style={fill=barblue},
+    bar progress label font=\mdseries\footnotesize\color{black!70},
+    group incomplete/.append style={fill=groupblue},
+    group left shift=0,
+    group right shift=0,
+    group height=.5,
+    group peaks tip position=0,
+    group label node/.append style={left=.6cm},
+    group progress label font=\bfseries\small,
+    link/.style={-latex, line width=1.5pt, linkred},
+    link label font=\scriptsize\bfseries,
+    link label node/.append style={below left=-2pt and 0pt}
+  ]{1}{16}
+  
+  \gantttitle[title label node/.append style={below left=7pt and -3pt}
+  ]{WEEKS:\quad1}{1}
+  \gantttitlelist{2,...,16}{1} \\
+  \ganttgroup[progress=10]{Beads}{1}{12} \\
+  \ganttbar[progress=75,progress label text={},name=LJBox]{\textbf{LJ} Box}{1}{2} \\  
+  \ganttbar[progress=75,progress label text={},name=LJSlab]{\textbf{LJ} Slab}{1}{2} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGR} Box}{8}{10} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGR} Slab}{8}{9} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGq} Box}{12}{14} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGq} Slab}{12}{13} \\
+  \ganttbar[progress=75, progress label text={}]{\textbf{DGS} Box}{6}{8}\\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGS} Slab}{6}{7} \\[grid]
+  \ganttgroup[progress=0]{Chains}{2}{16} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{LJ} Box}{2}{5} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{LJ} Slab}{3}{6} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGR} Box}{10}{12} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGR} Slab}{10}{11} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGq} Box}{14}{16} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGq} Slab}{14}{16} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGP} Box}{14}{16} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGP} Slab}{14}{16} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGS} Box}{4}{7} \\
+  \ganttbar[progress=75,progress label text={}]{\textbf{DGS} Slab}{4}{6} 
+	%DRAW LINKS  
+  %\ganttlink[link type=s-s]{WBS1A}{WBS1B}
+  %\ganttlink[link type=f-s]{WBS1B}{WBS1C}
+  %\ganttlink[link type=f-f,link label node/.append style=left]{WBS1C}{WBS1D}
+\end{ganttchart}
+
+
+\section{Codelist(Outdated)}
+(THIS SECTION BELLOW IS OLD, IT WILL BE FIXED SOON)
+Right now I have:
+\begin{itemize}
+            \item [$Dignon\_slab$]  folder with the Dignon chain slab method.
+			\item [$LJ\_chain.lmp$]  box simulation of LJ chains
+			\item [$slab\_long.lmp$]  slab simulation for LJ beads
+			\item [$in.P-simplelj$]  box simulation for LJ beads
+\end{itemize}
+
+To check:
+
+\begin{itemize}
+			\item in.dignon_fluid_box : dignon fluid box simulation
+\end{itemize}			
+		
+Missing:
+
+\begin{itemize}
+\item slab simulation of LJ chains
+\end{itemize}  
+  
+\bibliographystyle{plain}
+\bibliography{bibfile}
 \end{document}
+
+
+%TRASH
+
+%
+% A simpler example from the package documentation:
+%
+%\begin{ganttchart}{1}{12}
+%  \gantttitle{2011}{12} \\
+%  \gantttitlelist{1,...,12}{1} \\
+%  \ganttgroup{Group 1}{1}{7} \\
+%  \ganttbar{Task 1}{1}{2} \\
+%  \ganttlinkedbar{Task 2}{3}{7} \ganttnewline
+%  \ganttmilestone{Milestone}{7} \ganttnewline
+%  \ganttbar{Final Task}{8}{12}
+%  \ganttlink{elem2}{elem3}
+%  \ganttlink{elem3}{elem4}
+%\end{ganttchart}
