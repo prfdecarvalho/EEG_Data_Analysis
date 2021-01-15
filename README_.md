@@ -6,7 +6,7 @@
 ![Code Language](https://img.shields.io/badge/Python-darkgreen) 
 
 ## Table of Contents
-- [Visualization](### Visualization)
+- [Visualization] (### Visualization)
 - [PSD](### PSD)
 - [DFA Analysis](### DFA)
 - [Autocorrelation](### Autocorrelation)
@@ -16,6 +16,9 @@
 ---
 | :warning:    :warning:|
 |-----------------------------------------|
+## References
+https://elifesciences.org/articles/61277
+
 ### Visualization
 *Dignon Bead Box*, here we simulate a system of monomeric particles interacting via Dignon potential using the *box* method.
 ### PSD
