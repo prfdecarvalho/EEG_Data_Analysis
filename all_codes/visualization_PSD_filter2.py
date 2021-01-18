@@ -34,7 +34,7 @@ def notch(unfiltered, interference_frequency, sampling_frequency, rf=35.):
 fs = 1024 #freq. threshold
 npers = 1024 #resolution
 hf = 100 #higher freq. to show
-interference_freq = 50 #NOISE
+interference_freq = 300 #NOISE
 #############
 
 #PSD Log Y HTL
@@ -50,7 +50,7 @@ plt.ylabel(r'PSD [$V^{2}/Hz$]')
 plt.legend( bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
 plt.title('PSD Log Y HTL; File: '+fname)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-filename3 = fname+"_PSD_HTL.png"
+filename3 = fname+"_PSD_HTL_NF.png"
 plt.savefig(filename3, dpi=500) #EXPORT PLOT AS PNG FILE
 ##
 
@@ -70,7 +70,7 @@ plt.legend( bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
 plt.title('PSD Log X HTL; File: '+fname)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-filename3 = fname+"_LX_PSD_HTL.png"
+filename3 = fname+"_LX_PSD_HTL_NF.png"
 plt.savefig(filename3, dpi=500) #EXPORT PLOT AS PNG FILE
 ##
 
@@ -90,7 +90,7 @@ plt.legend( bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
 plt.title('PSD Log Y HTR; File: '+fname)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-filename3 = fname+"_PSD_HTR.png"
+filename3 = fname+"_PSD_HTR_NF.png"
 plt.savefig(filename3, dpi=500)
 ##
 
@@ -110,7 +110,7 @@ plt.legend( bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
 plt.title('PSD Log X HTR; File: '+fname)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-filename3 = fname+"_LX_PSD_HTR.png"
+filename3 = fname+"_LX_PSD_HTR_NF.png"
 plt.savefig(filename3, dpi=500)
 ##
 
@@ -130,7 +130,7 @@ plt.legend( bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
 plt.title('PSD Log-Log HTR; File: '+fname)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-filename3 = fname+"_LL_PSD_HTR.png"
+filename3 = fname+"_LL_PSD_HTR_NF.png"
 plt.savefig(filename3, dpi=500)
 ##
 plt.clf()
@@ -149,7 +149,7 @@ plt.legend( bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
 plt.title('PSD Log-Log HTL; File: '+fname)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-filename3 = fname+"_LL_PSD_HTL.png"
+filename3 = fname+"_LL_PSD_HTL_NF.png"
 plt.savefig(filename3, dpi=500) #EXPORT PLOT AS PNG FILE
 
 plt.clf()
@@ -168,7 +168,7 @@ plt.legend( bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
 plt.title('PSD Log-Log HTL; File: '+fname)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-filename3 = fname+"_Lin_PSD_HTR.png"
+filename3 = fname+"_Lin_PSD_HTR_NF.png"
 plt.savefig(filename3, dpi=500)
 ##
 plt.clf()
@@ -188,5 +188,5 @@ plt.legend( bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
 plt.title('PSD Log-Log HTL; File: '+fname)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
-filename3 = fname+"_Lin_PSD_HTL.png"
+filename3 = fname+"_Lin_PSD_HTL_NF.png"
 plt.savefig(filename3, dpi=500) #EXPORT PLOT AS PNG FILE
